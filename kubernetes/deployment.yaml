@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mcp-plugin
+  name: mcp-plugin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-plugin
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mcp-plugin
+    spec:
+      containers:
+      - image: upmdev.azurecr.io/cnpg-i-mcp-demo:latest
+        imagePullPolicy: "IfNotPresent"
+        name: cnpg-i-mcp-demo
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        args:
+        - plugin
+        - --server-cert=/server/tls.crt
+        - --server-key=/server/tls.key
+        - --client-cert=/client/tls.crt
+        - --server-address=:9090
+        volumeMounts:
+        - mountPath: /server
+          name: server
+        - mountPath: /client
+          name: client
+        resources: {}
+      volumes:
+      - name: server
+        secret:
+          secretName: mcp-plugin-server-tls
+      - name: client
+        secret:
+          secretName: mcp-plugin-client-tls

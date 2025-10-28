@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-example
+spec:
+  instances: 3
+
+  plugins:
+  - name: postgres-mcp-cnpg-plugin
+    parameters:
+      replica-only: "true" 
+
+  storage:
+    size: 1Gi

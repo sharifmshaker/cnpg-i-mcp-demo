@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mcp-plugin
+    cnpg.io/pluginName: postgres-mcp-cnpg-plugin
+  annotations:
+    cnpg.io/pluginClientSecret: mcp-plugin-client-tls
+    cnpg.io/pluginServerSecret: mcp-plugin-server-tls
+    cnpg.io/pluginPort: "9090"
+  name: mcp-plugin
+spec:
+  ports:
+  - port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: mcp-plugin
