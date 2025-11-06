@@ -214,6 +214,7 @@ func (impl Implementation) reconcileService(
 
 	if configuration.ReplicaOnly && (svc.Spec.Selector == nil || svc.Spec.Selector["cnpg.io/instanceRole"] != "replica") {
 		logger.Debug("Skipping configuration of MCP server port on non-replica service")
+		return &lifecycle.OperatorLifecycleResponse{}, nil
 	}
 	
 	mutatedSvc := svc.DeepCopy()
