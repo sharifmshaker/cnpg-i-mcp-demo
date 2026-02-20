@@ -3,6 +3,7 @@ module github.com/sharifmshaker/cnpg-i-mcp-demo
 go 1.25.3
 
 require (
+	github.com/cloudnative-pg/api v1.28.0
 	github.com/cloudnative-pg/cnpg-i v0.3.1
 	github.com/cloudnative-pg/cnpg-i-machinery v0.4.2
 	github.com/cloudnative-pg/machinery v0.3.3
@@ -10,12 +11,13 @@ require (
 	google.golang.org/grpc v1.78.0
 	k8s.io/api v0.35.0
 	k8s.io/apimachinery v0.35.0
+	k8s.io/client-go v0.35.0
+	sigs.k8s.io/controller-runtime v0.22.4
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudnative-pg/api v1.28.0 // indirect
 	github.com/cloudnative-pg/barman-cloud v0.3.3 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
@@ -82,11 +84,9 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/apiextensions-apiserver v0.35.0 // indirect
-	k8s.io/client-go v0.35.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20251125145642-4e65d59e963e // indirect
 	k8s.io/utils v0.0.0-20251222233032-718f0e51e6d2 // indirect
-	sigs.k8s.io/controller-runtime v0.22.4 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.1 // indirect

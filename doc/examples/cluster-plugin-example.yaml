@@ -3,6 +3,10 @@ kind: Cluster
 metadata:
   name: cluster-example
 spec:
-  instances: 3
+  instances: 3 
+
+  plugins:
+  - name: postgres-mcp-cnpg-plugin 
+
   storage:
     size: 1Gi

@@ -7,5 +7,6 @@ resources:
 - deployment.yaml
 - server-certificate.yaml
 - service.yaml
+- rbac.yaml
 images:
 - name: cnpg-i-mcp-demo

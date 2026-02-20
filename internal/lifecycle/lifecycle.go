@@ -11,7 +11,6 @@ import (
 	"github.com/cloudnative-pg/cnpg-i/pkg/lifecycle"
 	"github.com/cloudnative-pg/machinery/pkg/log"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
 
 	"github.com/sharifmshaker/cnpg-i-mcp-demo/internal/config"
 	"github.com/sharifmshaker/cnpg-i-mcp-demo/internal/utils"
@@ -33,18 +32,6 @@ func (impl Implementation) GetCapabilities(
 			{
 				Group: "",
 				Kind:  "Pod",
-				OperationTypes: []*lifecycle.OperatorOperationType{
-					{
-						Type: lifecycle.OperatorOperationType_TYPE_CREATE,
-					},
-					{
-						Type: lifecycle.OperatorOperationType_TYPE_EVALUATE,
-					},
-				},
-			},
-			{
-				Group: "",
-				Kind:  "Service",
 				OperationTypes: []*lifecycle.OperatorOperationType{
 					{
 						Type: lifecycle.OperatorOperationType_TYPE_CREATE,
@@ -78,12 +65,6 @@ func (impl Implementation) LifecycleHook(
 		switch *operation {
 		case lifecycle.OperatorOperationType_TYPE_CREATE, lifecycle.OperatorOperationType_TYPE_EVALUATE:
 			return impl.reconcilePod(ctx, request)
-		}
-		// add any other custom logic to execute based on the operation
-	case "Service":
-		switch *operation {
-		case lifecycle.OperatorOperationType_TYPE_CREATE, lifecycle.OperatorOperationType_TYPE_EVALUATE:
-			return impl.reconcileService(ctx, request)
 		}
 	}
 
@@ -178,70 +159,3 @@ func (impl Implementation) reconcilePod(
 	}, nil
 }
 
-// reconcileService is called when creating a Service
-func (impl Implementation) reconcileService(
-	ctx context.Context,
-	request *lifecycle.OperatorLifecycleRequest,
-) (*lifecycle.OperatorLifecycleResponse, error) {
-	cluster, err := decoder.DecodeClusterLenient(request.GetClusterDefinition())
-	if err != nil {
-		return nil, err
-	}
-
-	svc := &corev1.Service{}
-	err = decoder.DecodeObjectLenient(request.GetObjectDefinition(), svc)
-	if err != nil {
-		return nil, err
-	}
-
-	// Check if the service is associated with the cluster
-	val, ok := svc.Labels["cnpg.io/cluster"]
-	if !ok || val != cluster.Name {
-		log.Debug("service is not associated with the cluster", "service", svc.Name, "cluster", cluster.Name)
-		return &lifecycle.OperatorLifecycleResponse{}, nil
-	}
-
-	logger := log.FromContext(ctx).WithName("cnpg_i_mcp_service_lifecycle")
-	helper := common.NewPlugin(
-		*cluster,
-		metadata.PluginName,
-	)
-
-	configuration, valErrs := config.FromParameters(helper)
-	if len(valErrs) > 0 {
-		return nil, valErrs[0]
-	}
-
-	if configuration.ReplicaOnly && (svc.Spec.Selector == nil || svc.Spec.Selector["cnpg.io/instanceRole"] != "replica") {
-		logger.Debug("Skipping configuration of MCP server port on non-replica service")
-		return &lifecycle.OperatorLifecycleResponse{}, nil
-	}
-	
-	mutatedSvc := svc.DeepCopy()
-	found := false
-	for i, port := range mutatedSvc.Spec.Ports {
-		if port.Name == "http-mcp" {
-			mutatedSvc.Spec.Ports[i].TargetPort = intstr.FromInt(8888)
-			mutatedSvc.Spec.Ports[i].Port = 80
-			found = true
-			break
-		}
-	}
-	if !found {
-		mutatedSvc.Spec.Ports = append(mutatedSvc.Spec.Ports, corev1.ServicePort{
-			Name:       "http-mcp",
-			TargetPort: intstr.FromInt(8888),
-			Port:       80,
-		})
-	}
-	patch, err := object.CreatePatch(mutatedSvc, svc)
-	if err != nil {
-		return nil, err
-	}
-
-	logger.Debug("generated service patch", "content", string(patch), "configuration", configuration)
-
-	return &lifecycle.OperatorLifecycleResponse{
-		JsonPatch: patch,
-	}, nil
-}

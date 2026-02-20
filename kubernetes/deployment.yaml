@@ -16,8 +16,9 @@ spec:
       labels:
         app: mcp-plugin
     spec:
+      serviceAccountName: postgres-mcp-plugin
       containers:
-      - image: upmdev.azurecr.io/cnpg-i-mcp-demo:latest
+      - image: cnpg-i-mcp-demo:latest
         imagePullPolicy: "IfNotPresent"
         name: cnpg-i-mcp-demo
         ports:
