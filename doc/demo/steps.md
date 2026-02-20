@@ -51,7 +51,8 @@ plugins:
 
 ## Connect to the mcp port using claude
 ```
-> claude mcp add postgres-local --transport sse http://localhost:8080/sse # maybe add /sse or /mcp or /mcp/sse to the end 
+> k port-forward svc/pg-local-rw 8888:8888
+> claude mcp add postgres-local --transport sse http://localhost:8888/sse 
 ```
 
 ## Ask claude about the data in the database

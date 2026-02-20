@@ -13,8 +13,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EnsureMCPService creates or updates a dedicated MCP service for the cluster
-func EnsureMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Cluster, replicaOnly bool) error {
+// ensureMCPService cr`eates or updates a dedicated MCP service for the cluster
+func ensureMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Cluster, replicaOnly bool) error {
 	logger := log.FromContext(ctx).WithName("mcp_service_manager")
 
 	serviceName := fmt.Sprintf("%s-mcp", cluster.Name)
@@ -55,7 +55,7 @@ func EnsureMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Clu
 			Ports: []corev1.ServicePort{
 				{
 					Name:       "http-mcp",
-					Port:       80,
+					Port:       8888,
 					TargetPort: intstr.FromInt(8888),
 					Protocol:   corev1.ProtocolTCP,
 				},
@@ -118,7 +118,7 @@ func ensureMCPPortInPorts(ports []corev1.ServicePort) []corev1.ServicePort {
 	for i, port := range ports {
 		if port.Name == "http-mcp" {
 			// Update existing port
-			ports[i].Port = 80
+			ports[i].Port = 8888
 			ports[i].TargetPort = intstr.FromInt(8888)
 			ports[i].Protocol = corev1.ProtocolTCP
 			return ports
@@ -139,8 +139,8 @@ func ptr(b bool) *bool {
 	return &b
 }
 
-// DeleteMCPService deletes the dedicated MCP service for a cluster
-func DeleteMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Cluster) error {
+// deleteMCPService deletes the dedicated MCP service for a cluster
+func deleteMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Cluster) error {
 	logger := log.FromContext(ctx).WithName("mcp_service_manager")
 
 	serviceName := fmt.Sprintf("%s-mcp", cluster.Name)

@@ -70,7 +70,7 @@ func (impl Implementation) Pre(
 	// Check if cluster is being deleted
 	if !cluster.DeletionTimestamp.IsZero() {
 		logger.Info("Cluster is being deleted, cleaning up MCP service", "cluster", cluster.Name)
-		if err := DeleteMCPService(ctx, impl.Client, cluster); err != nil {
+		if err := deleteMCPService(ctx, impl.Client, cluster); err != nil {
 			logger.Error(err, "Failed to delete MCP service")
 			return nil, fmt.Errorf("failed to delete MCP service: %w", err)
 		}
@@ -93,7 +93,7 @@ func (impl Implementation) Pre(
 
 	// Ensure dedicated MCP service exists for this cluster
 	logger.Info("Ensuring MCP service exists", "cluster", cluster.Name, "namespace", cluster.Namespace, "replicaOnly", configuration.ReplicaOnly)
-	if err := EnsureMCPService(ctx, impl.Client, cluster, configuration.ReplicaOnly); err != nil {
+	if err := ensureMCPService(ctx, impl.Client, cluster, configuration.ReplicaOnly); err != nil {
 		logger.Error(err, "Failed to ensure MCP service exists")
 		// Return error to prevent reconciliation
 		return nil, fmt.Errorf("failed to ensure MCP service exists: %w", err)
