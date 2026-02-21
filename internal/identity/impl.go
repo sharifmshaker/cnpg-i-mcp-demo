@@ -49,11 +49,6 @@ func (Implementation) GetPluginCapabilities(
 		},
 	}
 
-	logger.Info("=== Returning Identity capabilities ===",
-		"numCapabilities", len(response.Capabilities),
-		"hasLifecycle", true,
-		"hasReconcilerHooks", true)
-
 	return response, nil
 }
 
