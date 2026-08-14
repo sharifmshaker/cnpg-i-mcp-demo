@@ -13,7 +13,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ensureMCPService cr`eates or updates a dedicated MCP service for the cluster
+// ensureMCPService creates or updates a dedicated MCP service for the cluster
 func ensureMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Cluster, replicaOnly bool) error {
 	logger := log.FromContext(ctx).WithName("mcp_service_manager")
 
@@ -36,9 +36,9 @@ func ensureMCPService(ctx context.Context, cli client.Client, cluster *apiv1.Clu
 			Name:      serviceName,
 			Namespace: namespace,
 			Labels: map[string]string{
-				"cnpg.io/cluster":   cluster.Name,
-				"app":               "postgres-mcp",
-				"managed-by":        "postgres-mcp-plugin",
+				"cnpg.io/cluster": cluster.Name,
+				"app":             "postgres-mcp",
+				"managed-by":      "postgres-mcp-plugin",
 			},
 			OwnerReferences: []metav1.OwnerReference{
 				{
@@ -128,7 +128,7 @@ func ensureMCPPortInPorts(ports []corev1.ServicePort) []corev1.ServicePort {
 	// Add new port
 	return append(ports, corev1.ServicePort{
 		Name:       "http-mcp",
-		Port:       80,
+		Port:       8888,
 		TargetPort: intstr.FromInt(8888),
 		Protocol:   corev1.ProtocolTCP,
 	})

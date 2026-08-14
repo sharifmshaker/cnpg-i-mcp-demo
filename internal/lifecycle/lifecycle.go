@@ -81,7 +81,7 @@ func (impl Implementation) reconcilePod(
 		return nil, err
 	}
 
-	logger := log.FromContext(ctx).WithName("cnpg_i_mcp_pod_lifecyle")
+	logger := log.FromContext(ctx).WithName("cnpg_i_mcp_pod_lifecycle")
 	helper := common.NewPlugin(
 		*cluster,
 		metadata.PluginName,
@@ -158,4 +158,3 @@ func (impl Implementation) reconcilePod(
 		JsonPatch: patch,
 	}, nil
 }
-

@@ -12,7 +12,7 @@ var Data = identity.GetPluginMetadataResponse{
 	DisplayName:   "Plugin for MCP Server",
 	ProjectUrl:    "https://github.com/sharifmshaker/cnpg-i-mcp-demo",
 	RepositoryUrl: "https://github.com/sharifmshaker/cnpg-i-mcp-demo",
-	License:       "Proprietary",
+	License:       "Apache-2.0",
 	LicenseUrl:    "https://github.com/sharifmshaker/cnpg-i-mcp-demo/LICENSE",
 	Maturity:      "alpha",
 }
