@@ -2,7 +2,7 @@
 
 A demo [CNPG-I](https://github.com/cloudnative-pg/cnpg-i) plugin for [CloudNativePG](https://cloudnative-pg.io) that attaches a **Model Context Protocol (MCP) server** to a Postgres cluster, letting an AI agent (e.g. Claude) query the database directly through the operator's plugin interface.
 
-It accompanies the talk **"Extending Cloud-Native Postgres with CNPG-I Plugins"** ([SCaLE 23x](https://www.socallinuxexpo.org/), March 2026).
+It accompanies the talk **"Extending Cloud-Native Postgres with CNPG-I Plugins"** ([SCaLE 23x](https://www.socallinuxexpo.org/scale/23x), March 2026).
 
 ## What it demonstrates
 
