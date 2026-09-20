@@ -4,6 +4,8 @@ A demo [CNPG-I](https://github.com/cloudnative-pg/cnpg-i) plugin for [CloudNativ
 
 It accompanies the talk **"Extending Cloud-Native Postgres with CNPG-I Plugins"** ([SCaLE 23x](https://www.socallinuxexpo.org/scale/23x), March 2026).
 
+📝 **Written companion:** [Extending CloudNativePG with the CNPG-I Plugin System](https://sharebearbeta.com/posts/extending-cloudnativepg-cnpg-i-plugin-system.html) — a walkthrough of the plugin interface and how the pieces below fit together.
+
 ## What it demonstrates
 
 - How to build a CNPG-I plugin that implements the **Identity**, **Lifecycle**, and **Reconciler** gRPC services.
